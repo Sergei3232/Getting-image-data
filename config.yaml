@@ -1,0 +1,10 @@
+//Путь к папке с файлами для работы
+path_file_process:
+//Путь к папке с файлом счетчиком
+path_file_count:
+//Путь к папке с файлом ответом
+path_file_answer:
+//Путь к БД image
+bd_connect_image:
+//Путь к БД file
+bd_connect_file:

@@ -18,12 +18,12 @@ type WorkFile struct {
 func NenConfig() (*WorkFile, error) {
 	var confRead WorkFile
 
-	yamlFile, err := ioutil.ReadFile(yamlFile)
+	yamlFileRead, err := ioutil.ReadFile(yamlFile)
 	if err != nil {
 		return nil, err
 	}
 
-	err = yaml.Unmarshal(yamlFile, &confRead)
+	err = yaml.Unmarshal(yamlFileRead, &confRead)
 	if err != nil {
 		return nil, err
 	}

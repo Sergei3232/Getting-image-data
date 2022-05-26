@@ -9,8 +9,8 @@ const yamlFile = "./config.yaml"
 
 type WorkFile struct {
 	PathWorkFile   string `yaml:"path_file_process"`
-	PathAnswerFile string `yaml:"path_file_count"`
-	PathCountFile  string `yaml:"path_file_answer"`
+	PathAnswerFile string `yaml:"path_file_answer"`
+	PathCountFile  string `yaml:"path_file_count"`
 	DNSImageLoader string `yaml:"bd_connect_image"`
 	DNSFileLoader  string `yaml:"bd_connect_file"`
 }

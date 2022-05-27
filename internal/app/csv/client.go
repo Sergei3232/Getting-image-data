@@ -24,7 +24,6 @@ type ClientCsv struct {
 
 func NewCounterCsv() *ClientCsv {
 	CounterCsv := &ClientCsv{}
-	CounterCsv.ReaderCsv()
 	return CounterCsv
 }
 

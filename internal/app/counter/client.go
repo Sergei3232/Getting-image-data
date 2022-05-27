@@ -6,7 +6,7 @@ import (
 )
 
 type TextCounter interface {
-	AddCountFile(id int) error
+	AddCountFile(count uint64) error
 	readFileCount() error
 }
 

@@ -14,14 +14,14 @@ type repository struct {
 	qb sq.StatementBuilderType
 }
 
-//func NewDbConnectClient(sqlConnect string) (Repository, error) {
-//	bd, err := sql.Open("postgres", sqlConnect) //postgres
-//	if err != nil {
-//		return nil, err
-//	}
-//	return &repository{bd, sq.StatementBuilder.PlaceholderFormat(sq.Dollar)}, nil
-//}
-//
+func NewDbConnectClient(sqlConnect string) (Repository, error) {
+	bd, err := sql.Open("postgres", sqlConnect) //postgres
+	if err != nil {
+		return nil, err
+	}
+	return &repository{bd, sq.StatementBuilder.PlaceholderFormat(sq.Dollar)}, nil
+}
+
 //func (r *repository) GetListData(conf config.Config, indent, startId uint64) ([]FileDataBase, error) {
 //	listDb := make([]FileDataBase, 0, 1000)
 //

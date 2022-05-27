@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-func (p *repository) GettingIdImageFileStorage(mapIdItems map[int64]datastruct.ImageFileCSV) {
+func (r *repository) GettingIdImageFileStorage(mapIdItems map[int64]datastruct.ImageFileCSV) {
 
 	imageIDs := make([]int64, 0, 100)
 	for key := range mapIdItems {
 		imageIDs = append(imageIDs, key)
 	}
 
-	sqlStatement, args, err := p.qb.Select("ii.item_id, i.url").
+	sqlStatement, args, err := r.qb.Select("ii.item_id, i.url").
 		From("item_images AS ii").
 		Join("image AS i on i.id = ii.image_ids[1]").
 		Where(sq.Eq{"ii.item_id": imageIDs}).
@@ -26,7 +26,7 @@ func (p *repository) GettingIdImageFileStorage(mapIdItems map[int64]datastruct.I
 		log.Println(err)
 	}
 
-	rows, errDB := p.db.Query(sqlStatement, args...)
+	rows, errDB := r.db.Query(sqlStatement, args...)
 	if errDB != nil {
 		log.Println(errDB)
 	}

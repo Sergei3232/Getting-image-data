@@ -8,6 +8,7 @@ import (
 type TextCounter interface {
 	AddCountFile(count uint64) error
 	readFileCount() error
+	GetIndent() int
 }
 
 type TextCounterStruct struct {
@@ -51,4 +52,8 @@ func (t *TextCounterStruct) readFileCount() error {
 	}
 	t.Indent = lastId
 	return nil
+}
+
+func (t *TextCounterStruct) GetIndent() int {
+	return int(t.Indent)
 }

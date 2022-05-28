@@ -61,7 +61,8 @@ func (p *Processor) Run() {
 			listForProcessing = listCsvData[startPosition:]
 			countFile = len(listForProcessing)
 		}
-		// Реализация обработки записей
+
+		p.portionHandling(listForProcessing)
 
 		startPosition, endPosition = startPosition+portion, endPosition+portion
 		err = p.Counter.AddCountFile(uint64(countFile))
@@ -95,22 +96,22 @@ func (p *Processor) portionHandling(arrayPortion []datastruct.ImageFileCSV) {
 			arrT = arrayPortion[i:n]
 		}
 
-		//go func() {
-		//	defer wg.Done()
-		mapCSVData := make(map[int64]datastruct.DataSCV)
+		go func() {
+			defer wg.Done()
+			mapCSVData := make(map[int64]datastruct.DataSCV)
 
-		for n, val := range arrT {
-			mapCSVData[val.MapiItem] = datastruct.DataSCV{Id: int64(n)}
-		}
+			for n, val := range arrT {
+				mapCSVData[val.MapiItem] = datastruct.DataSCV{Id: int64(n)}
+			}
 
-		p.DbImage.GettingIdImageFileStorage(mapCSVData)
-		p.DbFileStr.GetImageHightWidth(mapCSVData)
+			p.DbImage.GettingIdImageFileStorage(mapCSVData)
+			p.DbFileStr.GetImageHightWidth(mapCSVData)
 
-		for _, val := range mapCSVData {
-			arrT[val.Id].Height = val.Height
-			arrT[val.Id].Width = val.Width
-		}
-		//}()
+			for _, val := range mapCSVData {
+				arrT[val.Id].Height = val.Height
+				arrT[val.Id].Width = val.Width
+			}
+		}()
 		i += 500
 		n += 500
 	}

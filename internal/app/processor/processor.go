@@ -1,17 +1,20 @@
 package processor
 
 import (
-	"fmt"
 	"github.com/Sergei3232/Getting-image-data/config"
 	counter_id "github.com/Sergei3232/Getting-image-data/internal/app/counter"
 	csvCounter "github.com/Sergei3232/Getting-image-data/internal/app/csv"
 	"github.com/Sergei3232/Getting-image-data/internal/app/datastruct"
 	"github.com/Sergei3232/Getting-image-data/internal/app/db"
 	"log"
+	"strconv"
 	"sync"
 )
 
-const portion = 1000
+const (
+	portion     = 1000
+	fileSaveCsv = "files/answer_files/test.csv"
+)
 
 type Processor struct {
 	Counter   counter_id.TextCounter
@@ -45,11 +48,15 @@ func NewProcessor(config *config.WorkFile) (*Processor, error) {
 }
 
 func (p *Processor) Run() {
+	log.Println("START SCRIPT")
 
-	listCsvData, err := p.CsvClient.WriteWorkCsv(p.Config.PathWorkFile, p.Counter.GetIndent())
+	listCsvData, err := p.CsvClient.ReadWorkCsv(p.Config.PathWorkFile, p.Counter.GetIndent())
+	lenArray := strconv.Itoa(len(listCsvData))
+
 	if err != nil {
 		log.Panicln(err)
 	}
+	var finishDataCsv = make([]datastruct.ImageFileCSV, 0)
 	startPosition, endPosition := 0, portion
 	for startPosition < len(listCsvData) {
 		var countFile int
@@ -63,6 +70,11 @@ func (p *Processor) Run() {
 		}
 
 		p.portionHandling(listForProcessing)
+		finishDataCsv = append(finishDataCsv, listForProcessing...)
+		p.CsvClient.WriterCsvFile(finishDataCsv, fileSaveCsv)
+
+		lenFinisData := strconv.Itoa(len(finishDataCsv))
+		log.Println("SCRIPT: " + lenFinisData + "/" + lenArray)
 
 		startPosition, endPosition = startPosition+portion, endPosition+portion
 		err = p.Counter.AddCountFile(uint64(countFile))
@@ -71,8 +83,7 @@ func (p *Processor) Run() {
 		}
 	}
 
-	fmt.Println(listCsvData)
-
+	log.Println("END SCRIPT")
 }
 
 func (p *Processor) portionHandling(arrayPortion []datastruct.ImageFileCSV) {

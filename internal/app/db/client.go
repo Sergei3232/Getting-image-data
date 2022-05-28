@@ -9,7 +9,7 @@ import (
 
 type Repository interface {
 	GettingIdImageFileStorage(mapIdItems map[int64]datastruct.DataSCV)
-	GetImageHightWidth(mapIdItems map[int64]datastruct.ImageFileCSV) error
+	GetImageHightWidth(mapIdItems map[int64]datastruct.DataSCV) error
 }
 
 type repository struct {

@@ -6,8 +6,7 @@ import (
 	"log"
 )
 
-func (r *repository) GetImageHightWidth(mapIdItems map[int64]datastruct.ImageFileCSV) error {
-
+func (r *repository) GetImageHightWidth(mapIdItems map[int64]datastruct.DataSCV) error {
 	for key, val := range mapIdItems {
 		sqlStatement, args, err := r.qb.Select("height,width").
 			From("image").

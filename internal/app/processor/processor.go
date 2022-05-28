@@ -95,24 +95,22 @@ func (p *Processor) portionHandling(arrayPortion []datastruct.ImageFileCSV) {
 			arrT = arrayPortion[i:n]
 		}
 
-		go func() {
-			defer wg.Done()
-			mapCSVData := make(map[int64]datastruct.DataSCV)
+		//go func() {
+		//	defer wg.Done()
+		mapCSVData := make(map[int64]datastruct.DataSCV)
 
-			for n, val := range arrT {
-				mapCSVData[val.MapiItem] = datastruct.DataSCV{Id: int64(n)}
-			}
+		for n, val := range arrT {
+			mapCSVData[val.MapiItem] = datastruct.DataSCV{Id: int64(n)}
+		}
 
-			p.DbImage.GettingIdImageFileStorage(mapCSVData)
+		p.DbImage.GettingIdImageFileStorage(mapCSVData)
+		p.DbFileStr.GetImageHightWidth(mapCSVData)
 
-			//dbImageLoader.GettingIdImageFileStorage(mapCSVData)
-			//dbFileStorage.GetImageHightWidth(mapCSVData)
-
-			for _, val := range mapCSVData {
-				arrT[val.Id].Height = val.Height
-				arrT[val.Id].Width = val.Width
-			}
-		}()
+		for _, val := range mapCSVData {
+			arrT[val.Id].Height = val.Height
+			arrT[val.Id].Width = val.Width
+		}
+		//}()
 		i += 500
 		n += 500
 	}

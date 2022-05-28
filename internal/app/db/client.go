@@ -3,10 +3,12 @@ package db
 import (
 	"database/sql"
 	sq "github.com/Masterminds/squirrel"
+	"github.com/Sergei3232/Getting-image-data/internal/app/datastruct"
 	_ "github.com/lib/pq"
 )
 
 type Repository interface {
+	GettingIdImageFileStorage(mapIdItems map[int64]datastruct.DataSCV)
 }
 
 type repository struct {

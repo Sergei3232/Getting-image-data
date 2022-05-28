@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func (r *repository) GettingIdImageFileStorage(mapIdItems map[int64]datastruct.ImageFileCSV) {
+func (r *repository) GettingIdImageFileStorage(mapIdItems map[int64]datastruct.DataSCV) {
 
 	imageIDs := make([]int64, 0, 100)
 	for key := range mapIdItems {

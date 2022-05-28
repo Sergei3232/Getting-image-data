@@ -12,10 +12,10 @@ import (
 )
 
 type HandlersCsv interface {
-	ReaderCsv()
 	WriterCsv(listData []datastruct.ImageFileCSV, headerCsv []string) error
 	WriteWorkCsv(pathFiles string) ([]datastruct.ImageFileCSV, error)
 	GetListFilesProcess(path string) ([]string, error)
+	WriterCsvFile(arrayDataCSV []datastruct.ImageFileCSV, fileName string)
 }
 
 type ClientCsv struct {
@@ -25,10 +25,6 @@ type ClientCsv struct {
 func NewCounterCsv() *ClientCsv {
 	CounterCsv := &ClientCsv{}
 	return CounterCsv
-}
-
-func (c *ClientCsv) ReaderCsv() {
-
 }
 
 func (c *ClientCsv) WriterCsv(listData []datastruct.ImageFileCSV, headerCsv []string) error {
@@ -84,7 +80,7 @@ func (c *ClientCsv) GetListFilesProcess(path string) ([]string, error) {
 	return files, nil
 }
 
-func (c *ClientCsv) WriteWorkCsv(pathFiles string, countLineRead int) ([]datastruct.ImageFileCSV, error) {
+func (c *ClientCsv) ReadWorkCsv(pathFiles string, countLineRead int) ([]datastruct.ImageFileCSV, error) {
 
 	files, err := c.GetListFilesProcess(pathFiles)
 	if err != nil {
@@ -115,4 +111,37 @@ func (c *ClientCsv) WriteWorkCsv(pathFiles string, countLineRead int) ([]datastr
 	}
 
 	return dataCSV, nil
+}
+
+func (c *ClientCsv) WriterCsvFile(arrayDataCSV []datastruct.ImageFileCSV, fileName string) {
+
+	records := [][]string{
+		{"sku", "mapi_item", "height", "width"},
+	}
+
+	for i := 0; i < len(arrayDataCSV); i++ {
+		sku := strconv.Itoa(int(arrayDataCSV[i].Sku))
+		mapiItem := strconv.Itoa(int(arrayDataCSV[i].MapiItem))
+		height := strconv.Itoa(int(arrayDataCSV[i].Height))
+		width := strconv.Itoa(int(arrayDataCSV[i].Width))
+
+		records = append(records, []string{sku, mapiItem, height, width})
+	}
+
+	file, errCreate := os.Create(fileName)
+	if errCreate != nil {
+		log.Panic(errCreate)
+	}
+
+	w := csv.NewWriter(file)
+
+	for _, record := range records {
+		if err := w.Write(record); err != nil {
+			log.Fatalln("error writing record to csv:", err)
+		}
+	}
+
+	// Записываем любые буферизованные данные в подлежащий writer (стандартный вывод).
+	w.Flush()
+
 }

@@ -18,4 +18,9 @@ func main() {
 		log.Panicln(err)
 	}
 	processorClient.Run()
+
+	err = processorClient.CombiningFinishFiles()
+	if err != nil {
+		log.Panicln(err)
+	}
 }

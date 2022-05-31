@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	portion     = 1000
+	portion     = 3000
 	fileSaveCsv = "files/answer_files/test.csv"
 )
 
@@ -128,4 +128,14 @@ func (p *Processor) portionHandling(arrayPortion []datastruct.ImageFileCSV) {
 	}
 
 	wg.Wait()
+}
+
+func (p *Processor) CombiningFinishFiles() error {
+	combinedDat, err := p.CsvClient.ReadMergingFiles(p.Config.PathFinishFile, 0)
+	if err != nil {
+		return err
+	}
+	p.CsvClient.WriterCsvFile(combinedDat, p.Config.PathFinishFile+"/finish.csv")
+
+	return nil
 }

@@ -4,7 +4,9 @@ path_file_process: ./files/work_files
 path_file_count: ./files/count_files/count.txt
 # Путь к папке с файлом ответом
 path_file_answer: ./files/answer_files
+# Путь к папке с файлом ответом
+path_file_finish: ./files/finishFile
 # Путь к БД image
-bd_connect_image:
+bd_connect_image: postgresql://::/?sslmode=disable
 # Путь к БД file
-bd_connect_file:
+bd_connect_file: postgresql://::/?sslmode=disable

@@ -81,7 +81,6 @@ func (c *ClientCsv) GetListFilesProcess(path string) ([]string, error) {
 }
 
 func (c *ClientCsv) ReadWorkCsv(pathFiles string, countLineRead int) ([]datastruct.ImageFileCSV, error) {
-
 	files, err := c.GetListFilesProcess(pathFiles)
 	if err != nil {
 		return nil, nil
@@ -111,6 +110,40 @@ func (c *ClientCsv) ReadWorkCsv(pathFiles string, countLineRead int) ([]datastru
 	}
 
 	return dataCSV, nil
+}
+
+func (c *ClientCsv) ReadMergingFiles(pathFiles string, countLineRead int) ([]datastruct.ImageFileCSV, error) {
+	files, err := c.GetListFilesProcess(pathFiles)
+	if err != nil {
+		return nil, nil
+	}
+	arrayCsvData := make([]datastruct.ImageFileCSV, 0)
+	for _, file := range files {
+		f, err := os.Open(file)
+		defer f.Close()
+
+		if err != nil {
+			return nil, nil
+		}
+
+		lines, err := csv.NewReader(f).ReadAll()
+		if err != nil {
+			return nil, nil
+		}
+
+		for nl, line := range lines { //line
+			if nl > countLineRead {
+				a1, _ := strconv.ParseInt(line[0], 10, 64)
+				a2, _ := strconv.ParseInt(line[1], 10, 64)
+				a3, _ := strconv.ParseInt(line[2], 10, 64)
+				a4, _ := strconv.ParseInt(line[3], 10, 64)
+				arrayCsvData = append(arrayCsvData, datastruct.ImageFileCSV{Sku: a1, MapiItem: a2, Height: a3, Width: a4})
+			}
+			nl++
+		}
+	}
+
+	return arrayCsvData, nil
 }
 
 func (c *ClientCsv) WriterCsvFile(arrayDataCSV []datastruct.ImageFileCSV, fileName string) {
